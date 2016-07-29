@@ -1,0 +1,96 @@
+# set information to info page /info
+info:
+  component: Config Service
+  build:
+    artifact: '@project.artifactId@'
+    group: '@project.groupId@'
+    name: '@project.name@'
+    description: '@project.description@'
+    version: '@project.version@'
+    finalName: '@project.build.finalName@'
+    timestamp: '${spring.application.name}:${spring.application.instance_id:${random.value}}'
+
+
+spring:
+  logging:
+    level:
+      org.springframework: WARN
+  cloud:
+      config:
+        server:
+          git:
+            uri: https://github.com/spring-cloud-samples/config-repo
+            repos:
+              - patterns: multi-repo-demo-*
+                uri: https://github.com/spring-cloud-samples/config-repo
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+    healthcheck:
+          enabled: true
+
+---
+spring:
+  profiles: local
+server:
+   port: 8888
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+---
+spring:
+  profiles: peer1
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/spring-cloud-samples/config-repo
+          basedir: target/config
+server:
+   port: 8888
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+---
+spring:
+  profiles: peer2
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/spring-cloud-samples/config-repo
+          basedir: target/config
+server:
+   port: 8889
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8762/eureka/
+---
+spring:
+  profiles: production
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/spring-cloud-samples/config-repo
+          basedir: target/config
+server:
+  port: 8888
+management:
+  context-path: /
+
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${DISCOVERY_PORT_8761_TCP_ADDR:127.0.0.1}:8761/eureka/
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="false">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%d{HH:mm:ss.SSS} %highlight(%-5level [%thread] - %logger{32}) - %m%n</Pattern>
+            <!-- problem with coloration: http://jira.qos.ch/browse/LOGBACK-762 -->
+        </encoder>
+    </appender>
+    <logger name="org.apache.camel.impl.DefaultShutdownStrategy" level="ERROR"/>
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

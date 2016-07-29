@@ -1,0 +1,28 @@
+# Config Server Sample
+
+Run this project as a Spring Boot app (e.g. import into IDE and run
+main method, or use "mvn spring-boot:run"). It will start up on port
+8888 and serve the Config API from "/".
+
+## Resources
+
+| Path                             | Description                                        |
+|----------------------------------|----------------------------------------------------|
+| /{service}/{environment}/{label} | Example url to retrieve property {label} for config|
+|                                  | {service} in {environment}                         |
+
+## Docker Container
+
+There is a Maven goal (using a [plugin](https://github.com/fpeyron/config-service/blob/master/pom.xml#L103)) to
+generate the Docker container. The container is published in dockerhub at `florentpeyron/config-service`.
+
+After connect to docker machine  ( eval $(docker-machine env default) )
+
+$ mvn package docker:build
+$ docker push florentpeyron/config-service
+
+### Standalone command
+
+run locally instances peer1 and peer2 :
+$ java -jar -Xmx128m -Xms128m -Dspring.profiles.active=native,peer1 target/config-service-1.0-SNAPSHOT.jar
+$ java -jar -Xmx128m -Xms128m -Dspring.profiles.active=native,peer2 target/config-service-1.0-SNAPSHOT.jar
